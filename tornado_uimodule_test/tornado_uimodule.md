@@ -169,14 +169,28 @@ class MyUIModule(UIModule):
         return "<h2>body text from UIModule</h2>"
 
 
-# 在定义 Application 实例时，ui_modules 参数指定 UI 模块
+# 在定义 Application 实例时，ui_modules 参数指定 UI 模板
+#
+# ui_modules 这个 key 的值可按以下几种方式指定:
+
+# 1.
+#   ui_modules = {"UIModName" : derivedUIModule}
+# 2.
+#   ui_modules = [{"UIModName" : derivedUIModule}, {"UIModName2" : derivedUIModule2}, ...]
+# 3.
+#   import myuimod    
+#   ui_modules = myuimod
+# 4. 
+#   import myuimod
+#   import myuimod2
+#   ui_modules = [myuimod, myuimod2, ...]
+#   
+
+# 必须是 dict 类型，dict 中 key 是为模块自定义的名字
+# value 则是模块类的名字
 tornado.web.Application ([
     (r'/', Handler)
     ],
-    # 可以是 dict 类型，dict 中 key 是为模块自定义的名字; value 则是模块类的名字
-    # 也可以是模块(独立的文件); 
-    # 也可以是 list, 但 list 内的元素需是 dict 类型,如 [{"aui" : MyAUI}, {"bui" : MyBUI}]
-
     ui_modules = {"MyUI" : MyUIModule}, 
     static_path = os.path.join(os.path.dirname(__file__), "static"),
     template_path = os.path.join(os.path.dirname(__file__), "templates"),
